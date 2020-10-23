@@ -34,7 +34,7 @@
 
     <div id="result"></div>
 
-    <!-- kommentar test git -->
+    <!-- kommentar test git 1 -->
 
     <script src="javascript/script.js"></script>
 
