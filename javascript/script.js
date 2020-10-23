@@ -38,10 +38,12 @@ function submitForm(){
     var year = document.getElementById("search-year");
     var month = document.getElementById("search-month");
 
-    //In case the user inputs something longer than the possible year, longer than the month, or over.
-    if(year.value.length > 4 || month.value.length > 2 || month.value > "12" || year.value == "" || month.value == ""){
+    var currentYear = new Date().getFullYear();
 
-        alert("Tjek om du har udfyldt og overholder formatet med årstal og måned.");
+    //In case the user inputs something longer than the possible year, longer than the month, or over.
+    if(year.value.length > 4 || year.value == "" || year.value < 1992 || year.value > currentYear || month.value.length > 2 || month.value > "12" || month.value == ""){
+
+        alert("Tjek om du har udfyldt og overholder formatet med årstal og måned. Således: Årstal minimum 1992 op til " + currentYear + ", måned fra 1 til 12.");
 
     }
 
@@ -58,6 +60,14 @@ function submitForm(){
 
     //Using the inputs from the user to get the result by use of API and then using the result for the result divs innerHTML.
     else{
+
+        if(month.value.length < 2){
+
+            var tempMonth = "0" + month.value;
+
+            console.log("0" + month.value);
+
+        }
 
         var url = "https://api.statbank.dk/v1/data/BIL5/JSONSTAT?BILTYPE=" + type.value + "&Tid=" + year.value + "M" + month.value;
 

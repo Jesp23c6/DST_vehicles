@@ -1,7 +1,0 @@
-Following tests have been made:
-
-Trying to stress the search button by mass-clicking it, closing down the error prompt as soon as it pops up. No errors found.
-
-Trying to input wrong information in "Årstal" and "Måned", both by key press but also copy & paste. No errors found.
-
-Trying to stress the system with repeated entries as fast as possible. No errors found.
