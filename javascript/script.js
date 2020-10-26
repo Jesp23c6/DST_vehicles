@@ -41,7 +41,7 @@ function submitForm(){
     var currentYear = new Date().getFullYear();
 
     //In case the user inputs something longer than the possible year, longer than the month, or over.
-    if(year.value.length > 4 || year.value == "" || year.value < 1992 || year.value > currentYear || month.value > 12 ){
+    if(year.value.length > 4 || year.value == "" || year.value < 1992 || year.value > currentYear || month.value > 12 || month.value < 1 ){
 
         alert("Tjek om du har udfyldt og overholder formatet med årstal og måned. Således: Årstal minimum 1992 op til " + currentYear + ", måned fra 1 til 12.");
 
