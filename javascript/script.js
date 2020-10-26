@@ -1,15 +1,43 @@
+//DOM to get the select box.
+var sel = document.getElementById("search-select");
 
-//A function to fill out the select on index.php with the results from the API.
-function fillSelect(){
+// Create Promise polyfill script tag
+var promiseScript = document.createElement("script");
+promiseScript.type = "text/javascript";
+promiseScript.src = "https://cdn.jsdelivr.net/npm/promise-polyfill@8.1.3/dist/polyfill.min.js";
 
-    //DOM for the select
-    var sel = document.getElementById("search-select");
+// Create Fetch polyfill script tag
+var fetchScript = document.createElement("script");
+fetchScript.type = "text/javascript";
+fetchScript.src = "https://cdn.jsdelivr.net/npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js";
 
-    fetch("https://api.statbank.dk/v1/tableinfo/BIL5")
-    .then(response => response.json())
-    .then(info => info["variables"]["0"]["values"])
-    .then(data => {
+// Add polyfills to head element
+document.head.appendChild(promiseScript);
+document.head.appendChild(fetchScript);
 
+// Wait for the polyfills to load and run the function.
+setTimeout(function () {
+window
+    .fetch("https://api.statbank.dk/v1/tableinfo/BIL5")
+    .then(function(response){
+
+        //if the response to the API is slow or nonexistant, throw an error.
+        if(response.status >= 400){
+            throw new Error("Bad response from server");
+        }
+        //if not, the response is then put in json
+        return response.json();
+
+    })
+    .then(function(info){
+
+        //response is then specified through info
+        return info["variables"]["0"]["values"];
+
+    })
+    .then(function(data){
+
+        //info's specification is then used as data and determined how many times the for loop must run by .length
         for(i = 0; i < data.length; i++){
 
             //Creating an option element and then appending text and value, then appending it onto the select element.
@@ -21,13 +49,11 @@ function fillSelect(){
 
         }
 
-    });
+    }) 
+    .catch();
+}, 10);
 
-}
-
-//Making sure to run fillSelect() as the window finished loading.
-window.onload = fillSelect();
-
+//A function that goes through the form's values to deem if it is acceptable and follows format, then applies it to the API for an answer.
 function submitForm(){
 
     //DOM for submit, result div, select, input for year, input for month.
@@ -63,6 +89,7 @@ function submitForm(){
 
         if(month.value.length < 2){
 
+            //in case the user only inputs a single digit, this will make sure the API gets the correct result by adding a "0" in front.
             var tempMonth = "0" + month.value.toString();
 
         }
@@ -73,11 +100,19 @@ function submitForm(){
         }
 
         var url = "https://api.statbank.dk/v1/data/BIL5/JSONSTAT?BILTYPE=" + type.value + "&Tid=" + year.value + "M" + tempMonth;
-
+        
         fetch(url)
-        .then(response => response.json())
-        .then(info => info)
-        .then(data => {
+        .then(function(response){
+
+            //if the response to the API is slow or nonexistant, throw an error.
+            if(response.status >= 400){
+                throw new Error("Bad response from server");
+            }
+            //if not, the response is then put in json
+            return response.json();
+
+        })
+        .then(function(data){
 
             //Changing the innerHTML of the result div to show the result of the API.
             result.innerHTML = "Resultat:<br>" + "<input type='text' value='" + data["dataset"]["value"][0] + "' disabled>";
@@ -89,7 +124,7 @@ function submitForm(){
             }
 
         });
-
+        
     }
 
 }
