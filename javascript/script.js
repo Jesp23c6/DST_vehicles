@@ -41,7 +41,7 @@ function submitForm(){
     var currentYear = new Date().getFullYear();
 
     //In case the user inputs something longer than the possible year, longer than the month, or over.
-    if(year.value.length > 4 || year.value == "" || year.value < 1992 || year.value > currentYear || month.value.length > 2 || month.value > "12" || month.value == ""){
+    if(year.value.length > 4 || year.value == "" || year.value < 1992 || year.value > currentYear || month.value > 12 ){
 
         alert("Tjek om du har udfyldt og overholder formatet med årstal og måned. Således: Årstal minimum 1992 op til " + currentYear + ", måned fra 1 til 12.");
 
@@ -63,13 +63,16 @@ function submitForm(){
 
         if(month.value.length < 2){
 
-            var tempMonth = "0" + month.value;
+            var tempMonth = "0" + month.value.toString();
 
-            console.log("0" + month.value);
+        }
+        else{
+
+            var tempMonth = month.value;
 
         }
 
-        var url = "https://api.statbank.dk/v1/data/BIL5/JSONSTAT?BILTYPE=" + type.value + "&Tid=" + year.value + "M" + month.value;
+        var url = "https://api.statbank.dk/v1/data/BIL5/JSONSTAT?BILTYPE=" + type.value + "&Tid=" + year.value + "M" + tempMonth;
 
         fetch(url)
         .then(response => response.json())
