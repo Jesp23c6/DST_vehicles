@@ -4,12 +4,14 @@ var sel = document.getElementById("search-select");
 // Create Promise polyfill script tag
 var promiseScript = document.createElement("script");
 promiseScript.type = "text/javascript";
-promiseScript.src = "https://cdn.jsdelivr.net/npm/promise-polyfill@8.1.3/dist/polyfill.min.js";
+//promiseScript.src = "https://cdn.jsdelivr.net/npm/promise-polyfill@8.1.3/dist/polyfill.min.js";
+promiseScript.src = "javascript/promise-polyfill.js";
 
 // Create Fetch polyfill script tag
 var fetchScript = document.createElement("script");
 fetchScript.type = "text/javascript";
-fetchScript.src = "https://cdn.jsdelivr.net/npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js";
+//fetchScript.src = "https://cdn.jsdelivr.net/npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js";
+fetchScript.src = "javascript/fetch.js";
 
 // Add polyfills to head element
 document.head.appendChild(promiseScript);
@@ -17,8 +19,7 @@ document.head.appendChild(fetchScript);
 
 // Wait for the polyfills to load and run the function.
 setTimeout(function () {
-window
-    .fetch("https://api.statbank.dk/v1/tableinfo/BIL5")
+    window.fetch("https://api.statbank.dk/v1/tableinfo/BIL5")
     .then(function(response){
 
         //if the response to the API is slow or nonexistant, throw an error.
@@ -51,7 +52,7 @@ window
 
     }) 
     .catch();
-}, 10);
+}, 1);
 
 //A function that goes through the form's values to deem if it is acceptable and follows format, then applies it to the API for an answer.
 function submitForm(){
@@ -114,8 +115,18 @@ function submitForm(){
         })
         .then(function(data){
 
+            //Getting the result from the API.
+            var apiResult = data["dataset"]["value"][0];
+
+            //If there is no search result.
+            if(apiResult == null){
+
+                apiResult = "Ingen registreringer";
+
+            }
+
             //Changing the innerHTML of the result div to show the result of the API.
-            result.innerHTML = "Resultat:<br>" + "<input type='text' value='" + data["dataset"]["value"][0] + "' disabled>";
+            result.innerHTML = "Resultat:<br>" + "<input type='text' value='" + apiResult + "' disabled>";
 
             if(data){
 
