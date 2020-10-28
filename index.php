@@ -18,7 +18,7 @@
 
         <div id="flex-2">
             <label for="type">Årstal</label><br>
-            <input type="number" name="year" id="search-year" placeholder="1992-2020" maxlength="4">
+            <input type="number" name="year" id="search-year" placeholder="1992-<?php echo date ("Y"); ?>" maxlength="4">
         </div>
 
         <div id="flex-3">
