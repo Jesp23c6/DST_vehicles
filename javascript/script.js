@@ -54,6 +54,25 @@ setTimeout(function () {
     .catch();
 }, 100);
 
+//A function made to cycle through the string of the answers, to determine if an undesired '+' is in it. Only used for IE.
+function checkPlus(data){
+
+    var bool = false;
+
+    for(i = 0; i < data.value.length; i++){
+
+        if(data.value[i] == "+"){
+            
+            bool = true;
+
+        }
+
+    }
+
+    return bool;
+
+}
+
 //A function that goes through the form's values to deem if it is acceptable and follows format, then applies it to the API for an answer.
 function submitForm(){
 
@@ -67,6 +86,15 @@ function submitForm(){
 
     var currentYear = new Date().getFullYear();
 
+    var yearBool = false;
+    var monthBool = false;
+
+    //If the browser detected is an INTERNET EXPLORER, this will run.
+    if (window.document.documentMode) {
+        yearBool = checkPlus(year);
+        monthBool = checkPlus(month);
+    }
+
     //If the button has the value of reset and is then pressed, it resets result, and input fields.
     if(button.value == "Reset"){
 
@@ -76,12 +104,19 @@ function submitForm(){
 
         button.value = "Søg";
 
+        var selected = document.getElementById("search-select");
+
+        selected.selectedIndex = 0;
+
     }
 
     //In case the user inputs something longer than the possible year, longer than the month, or over.
-    else if(year.value.length > 4 || year.value == "" || year.value < 1992 || year.value > currentYear || month.value > 12 || month.value < 1 || month.value % 1 != 0 || year.value % 1 != 0 ){
+    else if(year.value.length > 4 || year.value == "" || year.value < currentYear-10 || year.value > currentYear || year.value % 1 != 0 || yearBool != false || month.value > 12 || month.value < 1 || month.value % 1 != 0 || month.value.length > 2 || monthBool != false){
 
-        alert("Tjek om du har udfyldt og overholder formatet med årstal og måned. Således: Årstal minimum 1992 op til " + currentYear + ", måned fra 1 til 12.");
+        alert("Tjek om du har udfyldt og overholder formatet med årstal og måned. Således: Årstal minimum " + (currentYear-10) + " op til " + currentYear + ", måned fra 1 til 12. Ingen specielle tegn.");
+
+        monthBool = false;
+        yearBool = false;
 
     }
 

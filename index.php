@@ -8,6 +8,12 @@
 </head>
 <body>
     
+    <?php
+
+        $currentYear = date ("Y");
+
+    ?>
+
     <div id="search">
 
         <div id="flex-1">
@@ -18,7 +24,7 @@
 
         <div id="flex-2">
             <label for="type">Årstal</label><br>
-            <input type="number" name="year" id="search-year" placeholder="1992-<?php echo date ("Y"); ?>" maxlength="4">
+            <input type="number" name="year" id="search-year" placeholder="<?php echo(($currentYear-10) . "-" . $currentYear ); ?>" maxlength="4">
         </div>
 
         <div id="flex-3">
