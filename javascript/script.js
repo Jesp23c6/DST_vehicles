@@ -52,7 +52,7 @@ setTimeout(function () {
 
     }) 
     .catch();
-}, 1);
+}, 100);
 
 //A function that goes through the form's values to deem if it is acceptable and follows format, then applies it to the API for an answer.
 function submitForm(){
